@@ -1,0 +1,137 @@
+﻿<Window x:Class="CIS.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:CIS"
+        Title="MainWindow" Height="650" Width="1200"
+        DataContext="MainWindow"       
+    >
+
+    <Window.Resources>
+        <local:BandsConverter x:Key="BandsConverter" />
+        <local:GenresConverter x:Key="GenresConverter" />
+        <local:RatingConverter x:Key="RatingConverter" />
+        <local:LiveRatingConverter x:Key="LiveRatingConverter" />
+    </Window.Resources>
+
+    <Grid Margin="0,0,0,45">
+        <TextBlock Name="Header" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Concert Information System" VerticalAlignment="Top" FontSize="32" Width="832" TextAlignment="Center"/>
+        <Button Name="Register" Content="Register" HorizontalAlignment="Left" Margin="847,10,0,0" VerticalAlignment="Top" Width="165" Height="43" FontSize="20" Click="RegisterBtn_Click"/>
+        <Button Name="Login" Content="Check news" HorizontalAlignment="Left" Margin="1017,10,0,0" VerticalAlignment="Top" Width="165" Height="43" FontSize="20" Click="LoginBtn_Click"/>
+        <TextBox x:Name="SearchBox" HorizontalAlignment="Left" Height="29" Margin="79,75,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="897" FontSize="20" TabIndex="0"/>
+        <Label Content="Order by:" HorizontalAlignment="Left" Margin="1017,75,0,0" VerticalAlignment="Top" Width="165" Height="29" FontSize="14" FontWeight="Bold" Visibility="Hidden"/>
+        <StackPanel Name="OrderRadio" HorizontalAlignment="Left" Height="94" Margin="1017,109,0,0" VerticalAlignment="Top" Width="165" Visibility="Hidden">
+            <RadioButton Margin="0,5" GroupName="order" Content="Rating" IsChecked="True" FontSize="16"/>
+            <RadioButton Margin="0,5" GroupName="order" Content="Live-Rating" IsChecked="False" FontSize="16"/>
+            <RadioButton Margin="0,5" GroupName="order" Content="Name-Rating" IsChecked="False" FontSize="16"/>
+        </StackPanel>
+        <StackPanel Name="EntityRadio" HorizontalAlignment="Left" Height="94" Margin="847,109,0,0" VerticalAlignment="Top" Width="165" Visibility="Hidden">
+            <RadioButton Margin="0,5" GroupName="entity" Content="Bands" IsChecked="True" FontSize="16"/>
+            <RadioButton Margin="0,5" GroupName="entity" Content="Places" IsChecked="False" FontSize="16"/>
+            <RadioButton Margin="0,5" GroupName="entity" Content="Concerts" IsChecked="False" FontSize="16"/>
+        </StackPanel>
+        <GroupBox HorizontalAlignment="Left" Margin="10,109,0,0" VerticalAlignment="Top" Height="86" Width="786" BorderBrush="#00000000" Foreground="Black" Background="#FFEAEAEA">
+            <Grid HorizontalAlignment="Left" Height="83" VerticalAlignment="Top" Width="792" Margin="0,0,-18,-3">
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Hey, maybe you want to suggest something new?&#10;Click to the right button to suggest!" VerticalAlignment="Top" Height="68" Width="468" FontSize="20" Margin="0,15,0,0"/>
+                <Button Name="PlaceButton" Content="Place" HorizontalAlignment="Left" Margin="623,10,0,0" VerticalAlignment="Top" Width="150" Height="35" FontSize="20" Click="PlaceButton_Click"/>
+                <Button Name="ConcertButton" Content="Concert" HorizontalAlignment="Left" Margin="623,45,0,0" VerticalAlignment="Top" Width="150" Height="35" FontSize="20" Click="ConcertButton_Click"/>
+                <Button Name="GenreButton" Content="Genre" HorizontalAlignment="Left" Margin="473,10,0,0" VerticalAlignment="Top" Width="150" Height="35" FontSize="20" Click="GenreButton_Click"/>
+                <Button Name="BandButton" Content="Band" HorizontalAlignment="Left" Margin="473,45,0,0" VerticalAlignment="Top" Width="150" Height="35" FontSize="20" Click="BandButton_Click"/>
+            </Grid>
+        </GroupBox>
+
+        <ListBox x:Name="UpcomingConcertsList" ItemsSource="{Binding UpcomingConcerts}" HorizontalAlignment="Left" Height="350" Margin="10,208,0,0" VerticalAlignment="Top" Width="370">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Control MouseDoubleClick="UpcomingConcert_DoubleClick">
+                        <Control.Template>
+                            <ControlTemplate>
+                                <Border Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4" Width="320">
+                                    <Grid Margin="3">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Grid.RowSpan="2" Width="100" Height="75" Margin="6" Source="{Binding ImageURL}"/>
+                                        <StackPanel Grid.Column="1" Margin="2,6">
+                                            <TextBlock FontWeight="Bold" Text="{Binding Name}"/>
+                                            <TextBlock Text="{Binding Date, StringFormat={}{0:g}}"/>
+                                            <TextBlock Text="{Binding Bands, Converter={StaticResource BandsConverter}}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </ControlTemplate>
+                        </Control.Template>
+                    </Control>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Border BorderBrush="Gray" BorderThickness="1" Height="26" HorizontalAlignment="Left" Margin="10,195,0,0" VerticalAlignment="Top" Width="370" CornerRadius="20" Background="White">
+            <Label Content="Upcoming Concerts" Margin="17,0,17,0" Padding="1,3,1,1" RenderTransformOrigin="0.5,0.52" />
+        </Border>
+
+        <ListBox x:Name="BandsList" ItemsSource="{Binding Bands}" HorizontalAlignment="Left" Height="350" Margin="411,208,0,0" VerticalAlignment="Top" Width="370">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Control MouseDoubleClick="Band_DoubleClick">
+                        <Control.Template>
+                            <ControlTemplate>
+                                <Border Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4" Width="320">
+                                    <Grid Margin="3">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Grid.RowSpan="2" Width="100" Height="75" Margin="6" Source="{Binding ImageURL}"/>
+                                        <StackPanel Grid.Column="1" Margin="2,6">
+                                            <TextBlock FontWeight="Bold" Text="{Binding Name}"/>
+                                            <TextBlock Text="{Binding Genres, Converter={StaticResource GenresConverter}}"/>
+                                            <TextBlock Text="{Binding Rating, Converter={StaticResource RatingConverter}}"/>
+                                            <TextBlock Text="{Binding LiveRating, Converter={StaticResource LiveRatingConverter}}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </ControlTemplate>
+                        </Control.Template>
+                    </Control>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Border BorderBrush="Gray" BorderThickness="1" Height="26" HorizontalAlignment="Left" Margin="411,195,0,0" VerticalAlignment="Top" Width="370" CornerRadius="20" Background="White">
+            <Label Content="Most Popular Bands" Margin="17,0,17,0" Padding="1,3,1,1" RenderTransformOrigin="0.5,0.52" />
+        </Border>
+
+        <ListBox x:Name="ConcertsList" ItemsSource="{Binding Concerts}" HorizontalAlignment="Left" Height="350" Margin="812,208,0,0" VerticalAlignment="Top" Width="370">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Control MouseDoubleClick="Concert_DoubleClick">
+                        <Control.Template>
+                            <ControlTemplate>
+                                <Border Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4" Width="320">
+                                    <Grid Margin="3">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Grid.RowSpan="2" Width="100" Height="75" Margin="6" Source="{Binding ImageURL}"/>
+                                        <StackPanel Grid.Column="1" Margin="2,6">
+                                            <TextBlock FontWeight="Bold" Text="{Binding Name}"/>
+                                            <TextBlock Text="{Binding Date, StringFormat=g}"/>
+                                            <TextBlock Text="{Binding Bands, Converter={StaticResource BandsConverter}}"/>
+                                            <TextBlock Text="{Binding Rating, Converter={StaticResource RatingConverter}}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </ControlTemplate>
+                        </Control.Template>
+                    </Control>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Border BorderBrush="Gray" BorderThickness="1" Height="26" HorizontalAlignment="Left" Margin="812,195,0,0" VerticalAlignment="Top" Width="370" CornerRadius="20" Background="White">
+            <Label Content="Most Popular Concerts" Margin="17,0,17,0" Padding="1,3,1,1" RenderTransformOrigin="0.5,0.52" />
+        </Border>
+        <Label Content="Search:" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="69" FontSize="18"/>
+        <Button x:Name="SearchBtn" Content="GO" HorizontalAlignment="Left" Margin="976,75,0,0" VerticalAlignment="Top" Width="36" Height="29" Click="SearchBtn_Click"/>
+
+    </Grid>
+</Window>

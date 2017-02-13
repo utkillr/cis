@@ -1,0 +1,7 @@
+﻿USE CIS
+
+CREATE ROLE Admin
+
+GO
+
+CREATE ROLE Viewer

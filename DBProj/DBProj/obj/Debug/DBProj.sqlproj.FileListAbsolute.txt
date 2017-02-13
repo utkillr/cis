@@ -1,0 +1,2 @@
+c:\users\1\documents\visual studio 2013\Projects\DBProj\DBProj\obj\Debug\DBProj.dll
+c:\users\1\documents\visual studio 2013\Projects\DBProj\DBProj\obj\Debug\DBProj.pdb
